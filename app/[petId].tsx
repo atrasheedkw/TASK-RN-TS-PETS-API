@@ -1,8 +1,15 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import React, { useEffect, useState } from "react";
-import { useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import pets from "@/data/pets";
-import { fetchOnePet } from "@/api/petServices";
+import { deletePet, fetchOnePet } from "@/api/petServices";
 
 interface petDetailsProps {
   name: string;
@@ -17,16 +24,20 @@ const PetDetails = () => {
   // useParams
   console.log("Fetched ID: ", petId);
 
-  // // fetch one pet handling
-  // const fetchOnePetHandling = async (petID: Number) => {
-  //   const onePet = await fetchOnePet(Number(petId));
-  //   console.log("Fetched One Pet: ", onePet);
-  //   return onePet;
-  // };
+  // delete function
+  const deletePetHandling = async () => {
+    try {
+      await deletePet(Number(petId));
+      Alert.alert("Success", "Pet has been deleted.");
+      router.back(); //navigate back to the list
+    } catch (error) {
+      console.error("Failed to delete pet:", error);
+      Alert.alert("Error", "Unable to delete pet.");
+    }
+  };
 
   //useState
   const [selectedPet, setselectedPet] = useState<petDetailsProps | null>(null);
-  // const selectedPet = fetchOnePetHandling(Number(petId));
 
   useEffect(() => {
     //fetch pet after first render
@@ -53,7 +64,7 @@ const PetDetails = () => {
       <Text style={styles.type}>Type: {pet.type}</Text>
 
       <View>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={deletePetHandling}>
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
       </View>
