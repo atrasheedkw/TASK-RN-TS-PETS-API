@@ -7,7 +7,8 @@ import {
   View,
 } from "react-native";
 import React, { useState } from "react";
-import { Link } from "expo-router";
+import { Link, useLocalSearchParams, useRouter } from "expo-router";
+import { fetchOnePet } from "@/api/petServices";
 
 interface PetItemProps {
   pet: {
@@ -24,6 +25,7 @@ interface PetItemProps {
 
 const PetItem = ({ pet, setDisplayPets, displayPets }: PetItemProps) => {
   const [image, setImage] = useState(pet.image);
+
   return (
     <Link href={`/${pet.id}`} asChild>
       <Pressable style={styles.container}>

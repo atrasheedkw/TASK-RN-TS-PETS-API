@@ -1,10 +1,10 @@
 import PetList from "@/components/PetList";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
 
 export default function Index() {
   return (
     <View style={styles.container}>
-      <PetList />
+      <PetList />x
     </View>
   );
 }

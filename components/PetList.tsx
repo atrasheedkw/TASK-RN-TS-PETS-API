@@ -8,11 +8,17 @@ import {
 import React, { useState } from "react";
 import pets from "@/data/pets";
 import PetItem from "./PetItem";
+import { fetchAllPets } from "@/api/petServices";
 
 const PetList = () => {
   const [search, setSearch] = useState("");
   const [type, setType] = useState("");
   const [displayPets, setDisplayPets] = useState(pets);
+  //fetch all pets handler
+  const fetchAllPetsHandling = async () => {
+    const pets = await fetchAllPets();
+    return setDisplayPets(pets);
+  };
 
   const petList = displayPets
     .filter((pet) => pet.name.toLowerCase().includes(search.toLowerCase()))
@@ -65,6 +71,13 @@ const PetList = () => {
         </TouchableOpacity>
       </ScrollView>
 
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => fetchAllPetsHandling()}
+      >
+        <Text style={styles.buttonText}>Fetch All Pets</Text>
+      </TouchableOpacity>
+
       {/* Pet List */}
       {petList}
     </ScrollView>
@@ -113,5 +126,17 @@ const styles = StyleSheet.create({
     width: "20%",
     justifyContent: "center",
     alignItems: "center",
+  },
+  button: {
+    backgroundColor: "purple",
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    borderRadius: 8,
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "600",
+    textAlign: "center",
   },
 });
